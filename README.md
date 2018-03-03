@@ -32,3 +32,4 @@ Que las personas que asistan puedan utilizar y manipular datos de manera profesi
 # ¿Hay tareas? :(
 
 Sí, pero son muy sencillas y están pensadas para no consumir tiempo o esfuerzo innecesario.
+
