@@ -13,28 +13,10 @@ output:
 layout: default_with_disqus
 ---
 
-```{r, echo=FALSE, warning=FALSE,include=FALSE}
-# in true geek fashion I am going to use R to calculate the dates
-# by giving the week of the course and the day to some functions
-# in lubridate.  This way I can change the course to a different
-# season and or format, and Voila! All the dates change appropriately.
-library(lubridate)
-StartSun <- ymd("20180225")  # Sunday of the week that the course starts
-WD <- (1:7)
-names(WD) <- c("Su", "Mo", "Tu", "We", "Th", "Fr", "Sa")
-LWD <- c("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
-names(LWD) <- names(WD)
-# given day D (like "Tu"), and Week of course W (1, 2, etc.)
-# and the date of the sunday before the first course meeting
-# this formats a string to print for a heading below
-course_day <- function(D, W) {
-  c_date <- StartSun + weeks(W-1) + days(WD[D]-1)
-  paste(LWD[D], ", ", month(c_date, label = TRUE, abbr = FALSE), " ", mday(c_date), ", ", year(c_date), sep="")
-}
-```
 
 
-# Syllabus  {#syllabus}
+
+# Syllabus  
 
 * Este documento conjunta los temas previstos para la capacitación, así como links a algunos materiales útiles. 
 
@@ -43,9 +25,8 @@ course_day <- function(D, W) {
 * La tareas están pensadas para no consumir una gran cantidad de tiempo o para ser difíciles. Se trata de apoyos a lo visto en la sesión de capacitación.
 
 
-## Sesión 1 {#syl-week-1}
+## Sesión 1 
 
-### `r  course_day("Mo", 1)`
 _Introducción a R y RStudio_
 
 * __Temas:__
@@ -61,9 +42,9 @@ _Introducción a R y RStudio_
 
 
 
-## Sesión 2 {#syl-week-2}
+## Sesión 2 
 
-### `r  course_day("Tu", 1)`
+
 _Tratamiento de datos_
 
 * __Temas:__
@@ -76,9 +57,8 @@ _Tratamiento de datos_
 
 
 
-## Sesión 3 {#syl-week-2}
+## Sesión 3 
 
-### `r  course_day("We", 1)`
 _Uso y visualización de información espacial_
 
 * __Temas:__
@@ -90,9 +70,9 @@ _Uso y visualización de información espacial_
     
 * __Tarea:__ Tarea 3.  **Hacer un mapa con la ubicación de las universidades involucradas en la #EstafaMaestra**.
 
-## Sesión 3 {#syl-week-2}
 
-### `r  course_day("Th", 1)`
+## Sesión 3 
+
 _Introducción al WebScrapping _
 
 * __Temas:__
@@ -102,9 +82,9 @@ _Introducción al WebScrapping _
     + Tratamiento de datos en lenguaje natural con `dplyr`
     
     
-## Sesión 4 {#syl-week-2}
+## Sesión 4 
 
-### `r  course_day("Fr", 1)`
+
 _Introducción ala minería de texto_
 
 * __Temas:__
