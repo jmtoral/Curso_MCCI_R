@@ -1,0 +1,122 @@
+---
+title: "Curso introductorio de R para Mexicanos VS la Corrpución y la Impunidad"
+author: "José Manuel Toral Cruz"
+header-includes:
+  - \usepackage[spanish]{babel}
+output:
+  html_document:
+    toc: yes
+  pdf_document:
+    toc: yes
+  bookdown::html_chapter:
+    toc: no
+layout: default_with_disqus
+---
+
+```{r, echo=FALSE, warning=FALSE,include=FALSE}
+# in true geek fashion I am going to use R to calculate the dates
+# by giving the week of the course and the day to some functions
+# in lubridate.  This way I can change the course to a different
+# season and or format, and Voila! All the dates change appropriately.
+library(lubridate)
+StartSun <- ymd("20180225")  # Sunday of the week that the course starts
+WD <- (1:7)
+names(WD) <- c("Su", "Mo", "Tu", "We", "Th", "Fr", "Sa")
+LWD <- c("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
+names(LWD) <- names(WD)
+# given day D (like "Tu"), and Week of course W (1, 2, etc.)
+# and the date of the sunday before the first course meeting
+# this formats a string to print for a heading below
+course_day <- function(D, W) {
+  c_date <- StartSun + weeks(W-1) + days(WD[D]-1)
+  paste(LWD[D], ", ", month(c_date, label = TRUE, abbr = FALSE), " ", mday(c_date), ", ", year(c_date), sep="")
+}
+```
+
+
+# Syllabus  {#syllabus}
+
+* Este documento conjunta los temas previstos para la capacitación, así como links a algunos materiales útiles. 
+
+* Cada sesión de cuatro horas consistirá en el seguimiento detallado de líneas de código en R contenidas en documento. Markdown, explicación general de las mismas e implementación con datos del "mundo real". Las libretas de Markdown quedan en posesión de los asistenteś para futuras referencias.
+
+* La tareas están pensadas para no consumir una gran cantidad de tiempo o para ser difíciles. Se trata de apoyos a lo visto en la sesión de capacitación.
+
+
+## Sesión 1 {#syl-week-1}
+
+### `r  course_day("Mo", 1)`
+_Introducción a R y RStudio_
+
+* __Temas:__
+    + Instalación de R y RStudio
+    + Cómo pedir ayuda
+    + Introducción a libretas en Markdown y a su sintaxis
+    + Introducción a la sintaxis general de R (objetos y funciones)
+    + Intalación y uso de paquetes
+    + Deinición y uso de vectores, matrices, strings y data frames
+    + Funciones básicas para la creación de visualizaciones de datos con `plot`.
+    
+* __Tarea:__ Tarea 1.  Completar los 8 niveles de [**Try R!**](http://tryr.codeschool.com)
+
+
+
+## Sesión 2 {#syl-week-2}
+
+### `r  course_day("Tu", 1)`
+_Tratamiento de datos_
+
+* __Temas:__
+    + Importar datos en formatos `.xls` (*MS Excel*), `.dta` (*SATA*), `.sav` (*SPSS*), `.dta` (*SATA*), `.txt` y `.csv`.
+    + Funciones básicas para el análisis estadístico (`lm`, `predict`, `stepAIC`, `anova`).
+    + Manipulación se datos: hacer muestras y subsets, unir bases con `merge`, creación de variables binomiales, entre otras.
+    + Manipulación de *strings*
+    + Introducción a la visualización de datos con `ggplot`.
+* __Tarea:__ Tarea 2.  **Terminar la lección de  swirl sobre Análisis Exploratorio de Datos**.
+
+
+
+## Sesión 3 {#syl-week-2}
+
+### `r  course_day("We", 1)`
+_Uso y visualización de información espacial_
+
+* __Temas:__
+    + Uso de datos con coordenadas (`rgdal`, `ggmaps`, `rgeos`, `maptools`, `tmaps`)
+    + Uso de geoformas
+    + Creación de choropleths
+    + Uso de la herramienta integrada de *OpenStreet Maps*.
+    + Uso de GMaps para georreferenciación
+    
+* __Tarea:__ Tarea 3.  **Hacer un mapa con la ubicación de las universidades involucradas en la #EstafaMaestra**.
+
+## Sesión 3 {#syl-week-2}
+
+### `r  course_day("Th", 1)`
+_Introducción al WebScrapping _
+
+* __Temas:__
+    + Breve introducción al lenguaje HTML (etiquetas y estructuras)
+    + Uso de `rvest` para el scrapeo de información
+    + Uso de loops para creación de bases con datos scrapeados
+    + Tratamiento de datos en lenguaje natural con `dplyr`
+    
+    
+## Sesión 4 {#syl-week-2}
+
+### `r  course_day("Fr", 1)`
+_Introducción ala minería de texto_
+
+* __Temas:__
+    + Breve introducción al tratamiento del lenguaje natural
+    + Uso de bases de datos con lenguaje natural (*Corpus* y *VCorpus*)
+    + Conteo y frecuencia de palabras
+    + *Stopwords* y *stemmas*
+    + Aplicaciones de la Ley de Zipf
+    + Medidas de diversidad léxica
+    
+
+
+
+
+
