@@ -25,7 +25,7 @@ layout: default_with_disqus
 * La tareas están pensadas para no consumir una gran cantidad de tiempo o para ser difíciles. Se trata de apoyos a lo visto en la sesión de capacitación.
 
 
-## Sesión 1 
+## Sesión 1 - 5 de marzo de 2018
 
 _Introducción a R y RStudio_
 
@@ -42,7 +42,7 @@ _Introducción a R y RStudio_
 
 
 
-## Sesión 2 
+## Sesión 2 - 9 de marzo de 2018
 
 
 _Tratamiento de datos_
@@ -57,7 +57,7 @@ _Tratamiento de datos_
 
 
 
-## Sesión 3 
+## Sesión 3 - 
 
 _Uso y visualización de información espacial_
 
@@ -73,7 +73,7 @@ _Uso y visualización de información espacial_
 
 ## Sesión 3 
 
-_Introducción al WebScrapping _
+_Introducción al WebScrapping_
 
 * __Temas:__
     + Breve introducción al lenguaje HTML (etiquetas y estructuras)

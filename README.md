@@ -10,9 +10,9 @@ Esta página es el repositorio *Git Hub* de la clase. Aquí subiré los material
 
 # ¿Cómo va a ser el curso?
 
-Uno de mis libros favoritos para aprender R, y con el que yo mismo aprendí inicialmente, es el famoso [YaRrr! The Pirate’s Guide to R](https://bookdown.org/ndphillips/YaRrr/). En muchos sentidos este curso estará inspirado en el método que utiliza este texto.
+Uno de mis libros favoritos para aprender R, y con el que yo mismo aprendí inicialmente, es el famoso [YaRrr! The Pirate’s Guide to R](https://bookdown.org/ndphillips/YaRrr/) de Nate Phllips. En muchos sentidos este curso estará inspirado en el método que utiliza este texto.
 
-La idea es que previo a cada sesión, deberán descargar la carpeta correspondiente en este repositorio. Por lo tanto, para la clase del lunes 5 de marzo, la carpeta `Sesion_1` contiene todo el material necesarios. Típicamente ese material consistirá en un archivo *Markdown*, algunas bases de datos y textos en PDF.
+La idea es que previo a cada sesión, deberán descargar la carpeta correspondiente en este repositorio. Por lo tanto, para la clase del lunes 5 de marzo, la carpeta `Sesion_1` contiene todo el materiales necesarios para seguir dicho contenido. Típicamente ese material consistirá en un archivo *Markdown*, algunas bases de datos y textos en PDF.
 
 
 # ¿Qué vamos a ver?
