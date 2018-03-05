@@ -229,19 +229,68 @@ y<-matrix(1:20, nrow=5,ncol=4)
 kable(y)
 ```
 
-Podemos incluso asignarle nombre a la matriz:
 
-```{r}
 
-```
+
 
 Literalmente le decimos a R que haga una matriz de los número 1 al 20 ordenadas en 5 filas con 4 columnas.
 
+
+Podemos incluso asignarle nombre a la matriz:
+
+```{r}
+cells <- c(1,26,24,68)
+rnames <- c("R1", "R2")
+cnames <- c("C1", "C2")
+mymatrix <- matrix(cells, nrow=2, ncol=2, byrow=TRUE,
+  dimnames=list(rnames, cnames)) 
+```
+
+```{r}
+kable(mymatrix)
+```
+
+Contruimos una matriz de 2x2 que agrupa los datos del objeto *cells* y le asigna los nombres R1 y R2 a las filas y los nombres C1 y C2 a las columnas.
+
 3. **Factores:** Son categorías como las conocemos: sexo(heteronormado), rango de edad, raza, tipo de espada, estado, puesto.
 
-5. "Mallas de datos"
+```{r}
+gender <- c(rep("male",20), rep("female", 30))
+gender <- factor(gender) 
+summary(gender) 
+```
 
-6. Listas
+5. **Listas**: Es la estructura más versatil de R, puede tener todo. Las usaremos muy intensivamente porque utilizan muy poco espacio y nos permiten guardar grandes cantidades de datos de todo tipo.
+
+```{r}
+my_list <- list(2,3,4,"bruta", "ciega", "sordomuda", TRUE, FALSE)
+my_list
+```
+
+6. **"Mallas de datos"**: Son el objeto que más vamos a usar. La mayoría de las bases de datos que conocemos se encuentran en este tipo de estructura de datos. 
+
+```{r}
+d <- c(1,2,3,4)
+e <- c("red", "white", "red", NA)
+f <- c(TRUE,TRUE,TRUE,FALSE)
+mydata <- data.frame(d,e,f)
+names(mydata) <- c("ID","Color","Passed") # variable names 
+```
+
+```{r}
+kable(mydata)
+```
+
+A modo de final, usemos la base de sobrevivientes del Titanic para hacer un data frame y vean como R puede leer datos de casi cualquier extension. 
+
+```{r}
+library(readxl)
+titanic <- read_excel("~/Documents/MCCI/Curso_R/Sesión 1/titanic.xlsx")
+```
+
+```{r}
+kable(head(titanic))
+```
 
 
 # Tareas
