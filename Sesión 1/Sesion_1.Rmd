@@ -2,7 +2,9 @@
 title: "Sesión 1"
 author: "José Manuel Toral Cruz"
 date: "March 5, 2018"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 
@@ -137,7 +139,7 @@ Antes de seguir con el emocionante mundo de R, es importante concoer la forma de
 
 Por lo pronto, lo importante es que ven estos cuadro grises que reciben el nombre de "chunks" y se abren escribiendo "```{r}" y se cierran con "```". Dentro de estos recuadros, podrán ir los comandos que necesiten y serán activados con las pequeñas flechas verdes que aparecerán si el chunk está correctamente definido. Prueben por ustedes mismos:
 
-```{r, message=FALSE, eval=FALSE}
+T```{r, message=FALSE, eval=FALSE}
 install.packages("rgl") # En un ratito les digo que significa esto.
 ```
 

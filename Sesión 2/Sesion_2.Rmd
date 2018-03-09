@@ -1,0 +1,111 @@
+---
+title: "Sesión 2"
+author: "José Manuel Toral Cruz"
+date: "March 9, 2018"
+output: html_document
+---
+
+
+**NOTA:** Tomen nota de las buenas prácticas en los documentos de Markdown.
+
+# Preliminares
+
+Aquí pondremos todos los paquetes que usaremos.
+
+```{r}
+library(tidyverse)
+library(readr)
+library(ggmap)
+```
+
+
+# Terrorismo en Pakistán
+
+En esta sesión vamos a trabajar directamente con una bases de datos, vamos a explorarlas y manipularlas. Como ejemplo vamos a usar la base de datos que viene en la carpeta en la página del curso. Esta base se llama "Pakistan Suicide Bombing Attacks: Most Authentic Count of Suicide Bombing Attacks in Pakistan (1995-2016)". Pese a que el tema no es nada agradable, esta es una de las bases del concurso Kaggel. Mientras jugamos con ella, científicxs de todo el mundo buscan encontrar un modelo que permita predecir el próximo ataque terrorista usando estos datos. Nosotrxs seremos menos aventurados. Igual va a estar cool.
+
+1. Carguemos la base. Esto le causó algunos problemas a varixs la sesión pasada.
+
+```{r}
+pt <- read.csv("/home/manuel/Documents/MCCI/Curso_R/Sesión 2/pakistan_terror.csv", 
+               stringsAsFactors=FALSE, fileEncoding="latin1")
+ 
+```
+
+2. Veamos la **estructura** y la **clase** son los datos y si nos conviene tenerlos así.
+
+```{r}
+
+str(pt)
+sapply(pt, class)
+
+
+```
+
+# Change class
+
+```{r}
+pt$Longitude <- as.numeric(pt$Longitude)
+```
+
+
+# Recodificar
+ 
+**Note:** Esto es un excelente recurso para recodificaciones: http://rprogramming.net/recode-data-in-r/
+
+```{r}
+unique(pt$Location.Sensitivity)
+unique(pt$Location.Sensitivity)[4]
+
+pt$Location.Sensitivity[pt$Location.Sensitivity=="low"] <- "Low"
+pt$Location.Sensitivity[pt$Location.Sensitivity==""] <- NA
+
+pt$Location.Sensitivity <- as.factor(pt$Location.Sensitivity)
+levels(pt$Location.Sensitivity)
+
+```
+
+```{r}
+bar1 <- ggplot(pt, aes(Location.Sensitivity)) + geom_bar()
+
+bar1
+
+bar2 <-  ggplot(subset(pt, !is.na(pt$Location.Sensitivity)), aes(Location.Sensitivity)) + geom_bar()
+
+bar2
+
+```
+
+
+# Unos mapas
+
+```{r, message=FALSE, warning=FALSE}
+pakistan_center = as.numeric(geocode("Pakistan"))
+
+m <- ggmap(get_googlemap(center=pakistan_center, scale=2, zoom=6), extent="device")
+
+m <-  m + geom_point(aes(x=Longitude, y=Latitude), 
+                     data=pt, 
+                     col="red", 
+                     alpha=0.4, 
+                     size=pt$Killed.Max*.2)+
+  scale_size_continuous(range=range(pt$Killed.Max))
+
+m
+```
+
+
+
+
+```{r, message=FALSE, warning=FALSE}
+b <- ggmap(get_map(location = pakistan_center, source = "stamen", maptype = "toner", 
+    crop = T, zoom=6)) + geom_point(aes(x=Longitude, y=Latitude), 
+                     data=pt, 
+                     col="red", 
+                     alpha=0.4, 
+                     size=pt$Killed.Max*.2)+
+  scale_size_continuous(range=range(pt$Killed.Max))
+
+b
+
+```      
+

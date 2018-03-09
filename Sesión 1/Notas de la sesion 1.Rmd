@@ -1,0 +1,17 @@
+---
+title: "Sesion 1 Notas"
+author: "José Manuel Toral Cruz"
+date: "March 5, 2018"
+output: html_document
+---
+
+# Primera seccion
+
+## Primera subseccion
+
+### Primera sub sub seccion
+
+```{r}
+?summary()
+```
+
