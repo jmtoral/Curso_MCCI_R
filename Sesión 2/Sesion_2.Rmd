@@ -64,8 +64,12 @@ levels(pt$Location.Sensitivity)
 
 ```
 
+
+# Una gráfica
+
 ```{r}
-bar1 <- ggplot(pt, aes(Location.Sensitivity)) + geom_bar()
+bar1 <- ggplot(pt, aes(Location.Sensitivity)) + 
+  geom_bar() 
 
 bar1
 
@@ -75,6 +79,42 @@ bar2
 
 ```
 
+Ya sé, están medio feas.
+
+```{r}
+bar2 <-  ggplot(subset(pt, !is.na(pt$Location.Sensitivity)), 
+                aes(Location.Sensitivity, fill=Location.Sensitivity)) + 
+  geom_bar()
+
+bar2
+
+```
+
+Por si les sigue sin gustar...
+
+```{r}
+bar2 <-  ggplot(subset(pt, !is.na(pt$Location.Sensitivity)), 
+                aes(Location.Sensitivity, fill=Location.Sensitivity)) + 
+  geom_bar() +
+  scale_fill_manual("legend", values = c("High" = "black", "Low" = "orange", "Medium" = "blue"))
+
+bar2
+```
+
+
+# ¿En dónde ha habido más atentados?
+
+```{r}
+ciudades <- as.data.frame(table(pt$City))
+```
+
+# ¿Cuándo ha habido más atentados?
+
+```{r}
+
+strsplit(pt$Date, fixed = "-")
+
+```
 
 # Unos mapas
 
@@ -109,3 +149,12 @@ b
 
 ```      
 
+
+# Índice de Estado de Derecho
+
+
+```{r}
+wjp <- read.csv("/home/manuel/Documents/MCCI/Curso_R/Sesión 2/wjp-2017.csv", 
+               stringsAsFactors=FALSE, fileEncoding="latin1")
+ 
+```
