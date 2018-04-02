@@ -108,13 +108,6 @@ bar2
 ciudades <- as.data.frame(table(pt$City))
 ```
 
-# ¿Cuándo ha habido más atentados?
-
-```{r}
-
-strsplit(pt$Date, fixed = "-")
-
-```
 
 # Unos mapas
 

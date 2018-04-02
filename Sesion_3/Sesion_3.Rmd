@@ -1,0 +1,222 @@
+---
+title: "Sesion 3"
+author: "José Manuel Toral Cruz"
+date: "March 16, 2018"
+output: html_document
+---
+
+**FINALMENTE. MAPAS.**
+
+Estoy obsesionado con los mapas, puedo decir que empecé a aprender a usar R porque quería hacer mapas. Este fue mi primer mapa en R.
+
+![Cambios en la población reclusa del fuero común por estado.](/home/manuel/Documents/MCCI/Curso_R/Sesion_3/index.png)
+
+Como en toda religión hay un libro sagrado y un o varios mesías. En los mapas en R el libro es (*Introduction to visualising spatial data in R*)[https://github.com/Robinlovelace/Creating-maps-in-R/blob/master/intro-spatial-rl.pdf] y fue escrito por la santísima trinidad: Robin Lovelace, James Cheshire y Rachel Oldroyd (¡la paz sea con ellxs!). Nosotros nos referiremos a este manual una y otra vez a lo largo de esta sesión.
+
+Hay un curso más avanzado con este título (*An Introduction to Spatial Data Analysis and Visualisation in R*)[https://data.cdrc.ac.uk/dataset/an-introduction-to-spatial-data-analysis-and-visualisation-in-r] que distribuye el famoso *Consumers Data Research Centre* y que fue escrito por el mismo Cheshire. No usaremos este porque se enfoca mucho en regresiones espaciales y 
+
+¿Que exagero? Está bien. No me crean, pero visiten los siguientes sitios antes de decir cualquier cosa:
+
+
+1. (Spatial.ly)[http://spatial.ly/] de Chesire.
+2. (¿A dónde van los animales?)[http://wheretheanimalsgo.com/] de Chesire y Uberti
+3. (Londres: La capital de la información)[http://theinformationcapital.com/]
+4. (El repositorio de Robin Lovelace)[https://github.com/Robinlovelace]
+5. (¿Puede la geografía salvar el mundo?)[https://www.robinlovelace.net/2017/05/02/can-geographic-data-save-the-world/]
+
+En fin, manos a la obra.
+
+# Preliminares
+
+```{r}
+x <- c("ggmap", "rgdal", "rgeos", "maptools", "dplyr", "tidyr", "leaflet")
+#install.packages(x) # warning: uncommenting this may take a number of minutes
+lapply(x, library, character.only = TRUE) # load the required packages
+library("jsonlite")
+library("httr")
+library("stringr")
+library("knitr")
+```
+
+
+
+¿Recuerdan cuándo les dije que no había más que datos de tipo caracter, numérico, números enteros, factores, vectores, mallas de datos y matrices? Les mentí. Hay un tipo de datos que también puede leer R, se trata de los *datos poligonales*. Normalmente, estos datos vienen en archivos `.shp` y se llaman Shapefiles o ESRI Shapefiles. En México, tenemos un amplísimo acervo recolectado por el INEGI de shapefiles en el (Marco Geoestadístico Nacional)[http://www.inegi.org.mx/geo/contenidos/geoestadistica/m_geoestadistico.aspx]. Esto shapefiles son gigantezcos.
+
+Usaremos, en cambio, la base del GADM: http://gadm.org/country
+
+# Cargar una shapefile
+
+```{r}
+lnd <- readOGR(dsn = "/home/manuel/Documents/MCCI/Curso_R/Sesion_3/MEX_adm_shp/MEX_adm1.shp")
+```
+
+#Manipular datos de una shapefile
+```{r}
+lnd@data
+sapply(lnd@data, class)
+lnd@proj4string
+```
+
+# Proyectar un mapa
+```{r}
+plot(lnd) #Todo el mapa
+
+plot(lnd, col = "lightgrey") #Seleccionar una parte
+sel <- lnd$NAME_1== "Jalisco"
+plot(lnd[ sel, ], col = "red", add = TRUE)
+```
+
+# Vamos a clusterizar el país
+```{r}
+easting_lnd <- coordinates(gCentroid(lnd))[[1]]
+northing_lnd <- coordinates(gCentroid(lnd))[[2]]
+
+east <- sapply(coordinates(lnd)[,1], function(x) x > easting_lnd)
+north <- sapply(coordinates(lnd)[,2], function(x) x > northing_lnd)
+
+lnd$quadrant <- "unknown" # prevent NAs in result
+lnd$quadrant[north] <- "El Norte"
+
+plot(lnd, col = "lightgrey") #Seleccionar una parte
+sel <- lnd$quadrant== "El Norte"
+plot(lnd[ sel, ], col = "red", add = TRUE)
+```
+
+
+# Unir información que no está en nuetro mapa
+
+## 1. Cargar informacion
+
+```{r}
+perception_data <- read.csv("/home/manuel/Documents/MCCI/Curso_R/Sesion_3/envipe17.csv",
+stringsAsFactors = FALSE)
+
+perception_data$NAME.
+head(lnd$NAME_1)
+```
+
+## 2. Unir los datos
+
+Es importante ver que los datos sean consistentes unos con otros.
+
+```{r}
+lnd$NAME_1 %in% perception_data$NAME.
+
+lnd$NAME_1[!lnd$NAME_1 %in% perception_data$NAME.]
+
+lnd$NAME_1 <- recode(lnd$NAME_1, "Coahuila"="Coahuila de Zaragoza", 
+                                    "Distrito Federal"="Ciudad de México",
+                                    "Michoacán"="Michoacán de Ocampo",
+                                    "Veracruz"="Veracruz de Ignacio de la Llave",
+                                    "México"="Estado de México")
+
+lnd$NAME_1 %in% perception_data$NAME.
+```
+
+Hacer el "join".
+
+```{r}
+lnd@data <- left_join(lnd@data, perception_data, by = c('NAME_1' = 'NAME.'))
+```
+
+## 3. Hace un choropleth
+
+```{r}
+lnd_f <- fortify(lnd)
+head(lnd_f, n = 2) # peak at the fortified data
+lnd$id <- row.names(lnd)
+lnd_f <- left_join(lnd_f, lnd@data)
+```
+
+```{r}
+
+map <- ggplot(lnd_f, aes(long, lat, group = group, fill = inseguro_rel)) +
+geom_polygon() + coord_equal() +
+labs(x = "Longitud", y = "Latitud",
+fill = "% de personas que se sienten inseguras") +
+ggtitle("Percepción de Inseguridad (ENVIPE 2017)") +
+  scale_fill_gradient(low = "blue", high = "red")
+
+map
+```
+
+
+
+# GGMAP
+```{r, eval=FALSE}
+omega <- geocode("Torre Omega")
+
+map.omega <- get_map(location = as.numeric(omega),
+                      color = "color",
+                      maptype = "roadmap",
+                      scale = 2,
+                      zoom = 16)
+
+
+ggmap(map.omega) + geom_point(aes(x = lon, y = lat),
+                               data = omega, colour = 'red',
+                               size = 4)
+```
+
+```{r}
+mapa <- get_googlemap("Mexico City", maptype = "roadmap", zoom = 12)
+ruta <- route(from = "Torre Omega", to = "Delegación Iztacalco")
+ggmap(mapa) + 
+  geom_path(aes(x = startLon, y = startLat, xend = endLon, yend = endLat),
+            colour = "red", size = 2, data = ruta)
+
+```
+
+```{r}
+pal <- colorQuantile("YlOrRd", NULL, n = 5)
+
+state_popup <- paste0("<strong>Estado: </strong>", 
+                      lnd$NAME_1, 
+                      "<br><strong>Porcentaje de personas inseguras: </strong>", 
+                      lnd$inseguro_rel)
+
+map2 <- leaflet(data = lnd) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(inseguro_rel), 
+              fillOpacity = 1, 
+              color = "#000000", 
+              weight = 1, 
+              popup = state_popup) 
+```
+
+
+# Datos de Diego Valle
+```{r}
+
+homicidio_series <- fromJSON(str_c("https://hoyodecrimen.com",
+                                   URLencode("/api/v1/df/crimes/HOMICIDIO DOLOSO/series?start_date=2014-01&end_date=2016-09")))$rows
+kable(head(homicidio_series), caption = 'Homicides in CDMX since 2014')
+
+```
+
+
+# Diego Valle
+
+```{r,eval=FALSE}
+
+crimen <- read.csv("/home/manuel/Documents/MCCI/Curso_R/Sesion_3/crime-lat-long.csv")
+homicidio <- crimen[which(crimen$crime=="HOMICIDIO DOLOSO"),]
+```
+
+```{r, eval=FALSE}
+cdmx <-  get_googlemap("Mexico City", maptype = "roadmap", zoom = 12)
+cdmxmap <- ggmap(cdmx, extent = "device", legend = "topleft")
+
+
+cdmx +
+  geom_point(data = homicidio, aes(x =long, y= lat, size = .1), 
+             alpha=.05)
+
+
+cdmxmap +
+stat_density2d(
+aes(x = long, y = lat, fill = ..level..,
+alpha = ..level..),
+size = 1, bins = 6, data = homicidio,
+geom = "polygon")
+```
