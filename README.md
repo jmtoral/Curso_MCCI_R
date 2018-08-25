@@ -1,6 +1,6 @@
 # Sobre este breve curso de R para Mexicanos contra la Corrupción y la Impunidad
 
-El objetivo de este breve curso es el de dar una revisión general a las herramientas que R puede ofrecer al personal de una organización tan relevante como MCCCI. De tal forma, el enfoque del curso es muy práctico y se basa en literatura siempre libre y siempre en constante actualización. Para fines del uso inmediato y a nivel profesional de R, no ahondaré en temas de programación o en conceptos profundos de estadística. 
+El objetivo de este breve curso es el de dar una revisión general a las herramientas que R puede ofrecer al personal de una organización tan relevante como MCCI. De tal forma, el enfoque del curso es muy práctico y se basa en literatura siempre libre y siempre en constante actualización. Para fines del uso inmediato y a nivel profesional de R, no ahondaré en temas de programación o en conceptos profundos de estadística. 
 
 Esta página es el repositorio *Git Hub* de la clase. Aquí subiré los materiales que usaremos antes de cada sección, así como textos relevantes o links útiles para que las personas que asistan puedan iniciar su propio camino de autoaprendizaje.
 
